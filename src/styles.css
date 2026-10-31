@@ -1,0 +1,869 @@
+/*
+  Chronicle palette: a teacher's marking kit, not a brand palette.
+  Each colour means one kind of note, everywhere it appears.
+*/
+:root {
+  --wall: #e4ebe6;        /* classroom wall green-grey, behind everything */
+  --paper: #ffffff;
+  --ink: #1f3a33;         /* chalkboard green: primary text and actions */
+  --ink-soft: #52665f;
+  --rule: #c9d4ce;
+  --rule-strong: #9fb0a8;
+  --manila: #ecd497;      /* folder tabs */
+  --manila-edge: #c9ab62;
+  --highlighter: #ffe45c; /* strengths */
+  --pencil: #2f5da8;      /* growth areas */
+  --ditto: #6a4c9c;       /* work habits: spirit-duplicator purple */
+  --danger: #a33a2a;
+
+  --ui: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --prose: "Literata", Georgia, serif;
+
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: 2.125rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--wall);
+  color: var(--ink);
+  font: 400 var(--step-0) / 1.5 var(--ui);
+}
+
+a {
+  color: var(--ink);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--pencil);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+h1 {
+  font-size: var(--step-3);
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: var(--step-1);
+}
+h3 {
+  font-size: var(--step-0);
+}
+p {
+  margin: 0 0 1em;
+  max-width: 68ch;
+}
+code {
+  font-size: 0.92em;
+  background: var(--wall);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  background: var(--paper);
+  padding: 0.5rem 0.75rem;
+  z-index: 10;
+}
+.skip:focus {
+  top: 0.5rem;
+}
+
+.booting {
+  padding: 2rem;
+  color: var(--ink-soft);
+}
+
+/* Header */
+.top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.85rem clamp(1rem, 3vw, 2rem);
+  background: var(--ink);
+  color: #f3f6f4;
+}
+.top a {
+  color: inherit;
+}
+.wordmark {
+  font-weight: 700;
+  font-size: var(--step-1);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.class-name {
+  color: #c4d3cc;
+}
+.class-picker {
+  background: transparent;
+  color: inherit;
+  border: 1px solid #5d7a71;
+  border-radius: 4px;
+  padding: 0.25rem 0.4rem;
+  font: inherit;
+}
+.class-picker option {
+  color: var(--ink);
+}
+.top nav {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+.top nav a {
+  text-decoration: none;
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+}
+.top nav a:hover {
+  background: #2c4c43;
+}
+.top nav a[aria-current="page"] {
+  background: var(--paper);
+  color: var(--ink);
+}
+.save-status {
+  font-size: var(--step--1);
+  color: #a9bdb4;
+}
+.save-status.error {
+  color: var(--highlighter);
+}
+
+/* Layout */
+.layout {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.layout.with-rail {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  align-items: start;
+}
+main {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 2px 6px 6px 6px;
+  min-height: 70vh;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+}
+main:focus {
+  outline: none;
+}
+
+/* Rail of folder tabs. The tabs sit against the paper's left edge. */
+.rail {
+  position: sticky;
+  top: 1rem;
+  padding-top: 0.5rem;
+}
+.rail-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-right: 0.75rem;
+}
+.rail-head h2 {
+  font-size: var(--step-0);
+  margin: 0;
+}
+.rail-head .link-button {
+  font-size: var(--step--1);
+}
+.tabs {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 -1px 3px 0;
+  padding: 0.42rem 0.6rem 0.42rem 0.75rem;
+  background: var(--manila);
+  border: 1px solid var(--manila-edge);
+  border-right: 0;
+  border-radius: 7px 0 0 7px;
+  text-decoration: none;
+  position: relative;
+}
+.tab:hover {
+  background: #f2dfaa;
+}
+.tab[aria-current="page"] {
+  background: var(--paper);
+  border-color: var(--rule);
+  z-index: 1;
+}
+.tab.thin {
+  background: repeating-linear-gradient(-45deg, var(--manila) 0 6px, #e2c886 6px 8px);
+}
+.tab.thin[aria-current="page"] {
+  background: var(--paper);
+}
+.tab-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.tab-last {
+  color: var(--ink-soft);
+}
+.rail-foot {
+  padding-right: 1rem;
+  margin-top: 0.75rem;
+}
+
+/* Tally marks */
+.tally {
+  flex: none;
+  overflow: visible;
+}
+.tally line {
+  stroke: var(--ink);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+.tally .tally-slash {
+  stroke-width: 1.9;
+}
+.tally .tally-none {
+  stroke: var(--rule-strong);
+  stroke-dasharray: 2 3;
+}
+.tally-cell {
+  white-space: nowrap;
+}
+.tally-cell .count {
+  margin-left: 0.5rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--step--1);
+}
+
+/* Text helpers */
+.lede {
+  font-size: var(--step-1);
+  color: var(--ink-soft);
+}
+.muted {
+  color: var(--ink-soft);
+}
+.fine {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+.warn {
+  color: #7a5a00;
+}
+.form-error {
+  color: var(--danger);
+  font-weight: 700;
+  min-height: 0;
+  margin: 0.25rem 0;
+}
+.form-error:empty {
+  display: none;
+}
+
+/* Buttons and inputs */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.55rem 1rem;
+  border-radius: 4px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+}
+.button:hover {
+  background: var(--wall);
+}
+.button.primary {
+  background: var(--ink);
+  color: #fff;
+}
+.button.primary:hover {
+  background: #2c5047;
+}
+.button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.button[aria-pressed="true"] {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.link-button {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+.link-button.quiet {
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+}
+.link-button.danger {
+  color: var(--danger);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 0.75rem 0;
+}
+
+input:not([type="radio"]):not([type="file"]),
+textarea,
+select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 4px;
+  padding: 0.5rem 0.65rem;
+}
+input:not([type="radio"]):not([type="file"]),
+textarea {
+  width: 100%;
+}
+textarea {
+  resize: vertical;
+}
+label {
+  display: block;
+  font-weight: 700;
+  margin: 1rem 0 0.3rem;
+}
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0 1rem;
+}
+
+/* Capture */
+.capture {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+}
+.capture-label {
+  font-size: var(--step-2);
+  margin-top: 0;
+}
+.capture-field {
+  position: relative;
+}
+.capture textarea {
+  font-size: var(--step-1);
+  line-height: 1.45;
+  border-color: var(--ink);
+  /* ruled like a legal pad */
+  background-image: repeating-linear-gradient(transparent 0 calc(1.45em - 1px), #e3eaf3 calc(1.45em - 1px) 1.45em);
+  background-position: 0 0.5rem;
+  background-attachment: local;
+}
+.capture .fine {
+  margin: 0.4rem 0 0;
+}
+.suggest {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 5;
+  min-width: 16rem;
+  margin: 4px 0 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--rule);
+}
+.suggest li {
+  padding: 0.35rem 0.6rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.suggest li[aria-selected="true"] {
+  background: var(--wall);
+}
+
+.tag-picker {
+  border: 0;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.tag-picker legend {
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 0.4rem;
+}
+.tag-option {
+  margin: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+.tag-option input {
+  position: absolute;
+  opacity: 0;
+}
+.tag-option span {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 999px;
+}
+.tag-option input:focus-visible + span {
+  outline: 3px solid var(--pencil);
+  outline-offset: 2px;
+}
+.tag-option input:checked + span {
+  border-color: var(--ink);
+  font-weight: 700;
+}
+.tag-strength input:checked + span {
+  background: var(--highlighter);
+}
+.tag-growth input:checked + span {
+  background: #e3ebf8;
+  border-color: var(--pencil);
+  color: var(--pencil);
+}
+.tag-habits input:checked + span {
+  background: #eee7f7;
+  border-color: var(--ditto);
+  color: var(--ditto);
+}
+.tag-note input:checked + span {
+  background: var(--wall);
+}
+
+/* Notes, marked up the way a teacher marks paper */
+.notes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.note {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.note-body {
+  font-size: var(--step-1);
+  margin-bottom: 0.3rem;
+}
+.note-strength .mark {
+  background: linear-gradient(100deg, transparent 0.15em, rgba(255, 228, 92, 0.85) 0.3em, rgba(255, 228, 92, 0.7) calc(100% - 0.3em), transparent calc(100% - 0.1em));
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.15em;
+}
+.note-growth .mark {
+  text-decoration: underline wavy var(--pencil) 1.5px;
+  text-underline-offset: 0.25em;
+}
+.note-habits .mark {
+  border-left: 3px solid var(--ditto);
+  padding-left: 0.5em;
+  display: inline-block;
+}
+.note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  margin: 0;
+}
+.note-tag {
+  font-weight: 700;
+}
+.note-strength .note-tag {
+  color: #6b5a00;
+}
+.note-growth .note-tag {
+  color: var(--pencil);
+}
+.note-habits .note-tag {
+  color: var(--ditto);
+}
+
+/* First run */
+.empty-start {
+  max-width: 40rem;
+  padding: 2rem 0;
+}
+.empty-start h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+.empty-start p {
+  font-size: var(--step-1);
+}
+
+/* Tables */
+.ledger {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+}
+.ledger th,
+.ledger td {
+  text-align: left;
+  padding: 0.55rem 0.75rem 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.ledger thead th {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  border-bottom: 2px solid var(--ink);
+}
+.ledger tbody th {
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ledger select {
+  padding: 0.2rem 0.4rem;
+}
+.row-actions {
+  text-align: right;
+}
+.ledger tr.thin th a {
+  text-decoration-style: dotted;
+}
+.comments-table .excerpt {
+  font-family: var(--prose);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  max-width: 42ch;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pill {
+  display: inline-block;
+  font-size: var(--step--1);
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--rule-strong);
+  white-space: nowrap;
+}
+.pill-final {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.pill-draft {
+  border-color: var(--ink);
+}
+.pill-none {
+  color: var(--ink-soft);
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.inline-form .row {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 32rem;
+}
+.bulk-add {
+  max-width: 36rem;
+}
+.bulk-add .button {
+  margin-top: 0.75rem;
+}
+
+/* Student page */
+.student-head {
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+}
+.student-head h1 {
+  margin-bottom: 0.25rem;
+}
+.student-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.pronoun {
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  padding: 0 0.5rem;
+  font-size: var(--step--1);
+}
+.student-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+.comment-panel {
+  position: sticky;
+  top: 1rem;
+  background: #fbfcfb;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.25rem;
+}
+.comment-text {
+  font-family: var(--prose);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+.editor-foot {
+  text-align: right;
+}
+.status {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.status-final {
+  color: var(--ink);
+}
+.history {
+  margin-top: 1rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.75rem;
+}
+.history summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.history ol {
+  padding-left: 1.25rem;
+}
+.comment-old {
+  font-family: var(--prose);
+  font-size: var(--step--1);
+}
+
+/* Review dialog */
+dialog.review {
+  width: min(44rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  padding: 1.5rem;
+  color: var(--ink);
+}
+dialog.review::backdrop {
+  background: rgba(31, 58, 51, 0.55);
+}
+.payload {
+  background: #f4f6f5;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: 0.95rem / 1.55 var(--ui);
+  max-height: 16rem;
+  overflow: auto;
+}
+.swap-list ul {
+  padding-left: 1.1rem;
+  margin: 0 0 0.75rem;
+}
+.ok {
+  color: #2d6a44;
+  font-weight: 700;
+}
+.leak {
+  color: var(--danger);
+  font-weight: 700;
+}
+.key-field {
+  border-top: 1px solid var(--rule);
+  margin-top: 1rem;
+}
+
+/* Privacy page */
+.view-privacy section,
+.view-privacy .settings {
+  max-width: 44rem;
+  padding: 1.25rem 0 0.5rem;
+  border-top: 1px solid var(--rule);
+  margin-top: 1.25rem;
+}
+.view-privacy h1 + section {
+  border-top: 0;
+  margin-top: 0;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+.stats dt {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  grid-row: 2;
+}
+.stats dd {
+  margin: 0;
+  font-size: var(--step-2);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  grid-row: 1;
+}
+.outbound {
+  padding-left: 1.25rem;
+}
+.outbound summary {
+  cursor: pointer;
+}
+.boot-error {
+  max-width: 40rem;
+  margin: 3rem auto;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translate(-50%, 1rem);
+  background: var(--ink);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, transform 0.15s;
+  max-width: calc(100vw - 2rem);
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 860px) {
+  .layout.with-rail {
+    display: block;
+  }
+  .rail {
+    position: static;
+    padding: 0 0 0.75rem;
+  }
+  .rail-head {
+    padding: 0;
+  }
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+    padding-bottom: 0.25rem;
+  }
+  .tab {
+    border-radius: 7px 7px 0 0;
+    border-right: 1px solid var(--manila-edge);
+    margin: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+  .tab-last,
+  .rail-foot {
+    display: none;
+  }
+  main {
+    border-radius: 6px;
+  }
+  .student-grid {
+    grid-template-columns: 1fr;
+  }
+  .comment-panel {
+    position: static;
+  }
+  .top nav {
+    margin-left: 0;
+    width: 100%;
+  }
+  .save-status {
+    display: none;
+  }
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ledger .tally {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none;
+  }
+}
